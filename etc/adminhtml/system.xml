@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="applepay_restrictions" translate="label" type="text" sortOrder="161" showInDefault="1" showInWebsite="1" showInStore="1">
+            <tab>magesuite</tab>
+            <label>Apple Pay Restrictions</label>
+            <resource>MageSuite_MollieApplePayRestrictor::applepay_restrictions</resource>
+            <group id="mollie_apple_pay_restrictions" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Mollie Apple Pay Restrictions</label>
+                <field id="full_visibility_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Full Visibility Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If disabled, additional parameter in URL is required to see Apple Pay button</comment>
+                </field>
+                <field id="url_parameter_key" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>URL Parameter Key</label>
+                    <comment>URL parameter name that restricts Apple Pay payment method visibility</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
