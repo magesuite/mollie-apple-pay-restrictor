@@ -34,4 +34,3 @@ $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE)
     ->setHasOptions(false);
 
 $productRepositoryFactory->save($product);
-
