@@ -62,7 +62,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoAppArea frontend
      * @magentoDataFixture loadProduct
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 0
-     * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
+     * @magentoConfigFixture current_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      */
     public function testItAddsApplePayHiddenClassToPageBodyForGuestCustomerWhenUrlParameterIsNotSet()
     {
@@ -90,7 +90,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoDataFixture loadProduct
      * @magentoDataFixture loadCustomer
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 0
-     * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
+     * @magentoConfigFixture current_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      */
     public function testItAddsApplePayHiddenClassToPageBodyForLoggedInCustomerWhenUrlParameterIsNotSet()
     {
@@ -118,7 +118,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoDataFixture loadProduct
      * @magentoDataFixture loadCustomer
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 0
-     * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
+     * @magentoConfigFixture current_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      */
     public function testItDoesNotAddApplePayHiddenClassToPageBodyWhenUrlParameterIsSet()
     {
@@ -147,7 +147,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoDataFixture loadProduct
      * @magentoDataFixture loadCustomer
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 1
-     * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
+     * @magentoConfigFixture current_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      */
     public function testItDoesNotAddApplePayHiddenClassToPageBodyWhenFullVisibilityIsEnabled()
     {
