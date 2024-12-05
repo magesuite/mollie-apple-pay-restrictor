@@ -47,9 +47,8 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
     public function setUp(): void
     {
         parent::setUp();
-
-        $mollieConfigInstanse = $this->_objectManager->create(\Mollie\Payment\Config::class);
-        $this->_objectManager->addSharedInstance($mollieConfigInstanse, \Mollie\Payment\Config::class);
+        $this->configWriter = $this->_objectManager->create(\Magento\Framework\App\Config\Storage\WriterInterface::class);
+        $this->configWriter->save("payment/mollie_general/apikey_test", "test_123456789012345678901234567890");
 
         $this->storeManager = $this->_objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
         $this->cartManagement = $this->_objectManager->get(\Magento\Quote\Api\CartManagementInterface::class);
