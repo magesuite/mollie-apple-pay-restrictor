@@ -1,48 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MageSuite\MollieApplePayRestrictor\Test\Integration\Observer;
 
 class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCase\AbstractController
 {
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $storeManager;
-
-    /**
-     * @var \Magento\Quote\Api\CartManagementInterface
-     */
-    protected $cartManagement;
-
-    /**
-     * @var \Magento\Quote\Api\CartRepositoryInterface
-     */
-    protected $cartRepository;
-
-    /**
-     * @var \Magento\Customer\Api\CustomerRepositoryInterface
-     */
-    protected $customerRepository;
-
-    /**
-     * @var \Magento\Customer\Model\Session
-     */
-    protected $customerSession;
-
-    /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
-     */
-    protected $productRepository;
-
-    /**
-     * @var \Magento\Checkout\Model\ShippingInformationManagement
-     */
-    protected $shippingInformationManagement;
-
-    /**
-     * @var \MageSuite\MollieApplePayRestrictor\Observer\AddMollieApplePayVisibilityClass
-     */
-    protected $addMollieApplePayVisibilityClass;
+    protected ?\Magento\Framework\App\Config\Storage\WriterInterface $configWriter = null;
+    protected ?\Magento\Store\Model\StoreManagerInterface $storeManager = null;
+    protected ?\Magento\Quote\Api\CartManagementInterface $cartManagement = null;
+    protected ?\Magento\Quote\Api\CartRepositoryInterface $cartRepository = null;
+    protected ?\Magento\Customer\Api\CustomerRepositoryInterface $customerRepository = null;
+    protected ?\Magento\Customer\Model\Session $customerSession = null;
+    protected ?\Magento\Catalog\Api\ProductRepositoryInterface $productRepository = null;
+    protected ?\Magento\Checkout\Model\ShippingInformationManagement $shippingInformationManagement = null;
+    protected ?\MageSuite\MollieApplePayRestrictor\Observer\AddMollieApplePayVisibilityClass $addMollieApplePayVisibilityClass = null;
 
     public function setUp(): void
     {
@@ -63,12 +35,12 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      * @magentoAppArea frontend
-     * @magentoDataFixture loadProduct
+     * @magentoDataFixture MageSuite_MollieApplePayRestrictor::Test/_files/product.php
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 0
      * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      * @magentoConfigFixture default_store payment/mollie_general/type test
      */
-    public function testItAddsApplePayHiddenClassToPageBodyForGuestCustomerWhenUrlParameterIsNotSet()
+    public function testItAddsApplePayHiddenClassToPageBodyForGuestCustomerWhenUrlParameterIsNotSet(): void
     {
         $customer = $this->createGuestCustomer('user@sample.com');
         $quote = $this->createQuote($customer);
@@ -76,7 +48,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         /** @var \Magento\Checkout\Model\Session $checkoutSession */
         $checkoutSession = $this->_objectManager->get(\Magento\Checkout\Model\Session::class);
         $checkoutSession->clearQuote();
-        $checkoutSession->setQuoteId($quote->getId());
+        $checkoutSession->setQuoteId((int) $quote->getId());
 
         $this->getRequest()
             ->setMethod(\Magento\Framework\App\Request\Http::METHOD_GET);
@@ -91,13 +63,13 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      * @magentoAppArea frontend
-     * @magentoDataFixture loadProduct
-     * @magentoDataFixture loadCustomer
+     * @magentoDataFixture MageSuite_MollieApplePayRestrictor::Test/_files/product.php
+     * @magentoDataFixture MageSuite_MollieApplePayRestrictor::Test/_files/customer.php
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 0
      * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      * @magentoConfigFixture default_store payment/mollie_general/type test
      */
-    public function testItAddsApplePayHiddenClassToPageBodyForLoggedInCustomerWhenUrlParameterIsNotSet()
+    public function testItAddsApplePayHiddenClassToPageBodyForLoggedInCustomerWhenUrlParameterIsNotSet(): void
     {
         $customer = $this->customerRepository->get('user24@example.com');
         $quote = $this->createQuote($customer);
@@ -105,7 +77,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         /** @var \Magento\Checkout\Model\Session $checkoutSession */
         $checkoutSession = $this->_objectManager->get(\Magento\Checkout\Model\Session::class);
         $checkoutSession->clearQuote();
-        $checkoutSession->setQuoteId($quote->getId());
+        $checkoutSession->setQuoteId((int) $quote->getId());
 
         $this->getRequest()
             ->setMethod(\Magento\Framework\App\Request\Http::METHOD_GET);
@@ -120,13 +92,13 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      * @magentoAppArea frontend
-     * @magentoDataFixture loadProduct
-     * @magentoDataFixture loadCustomer
+     * @magentoDataFixture MageSuite_MollieApplePayRestrictor::Test/_files/product.php
+     * @magentoDataFixture MageSuite_MollieApplePayRestrictor::Test/_files/customer.php
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 0
      * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      * @magentoConfigFixture default_store payment/mollie_general/type test
      */
-    public function testItDoesNotAddApplePayHiddenClassToPageBodyWhenUrlParameterIsSet()
+    public function testItDoesNotAddApplePayHiddenClassToPageBodyWhenUrlParameterIsSet(): void
     {
         $customer = $this->customerRepository->get('user24@example.com');
         $quote = $this->createQuote($customer);
@@ -134,7 +106,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         /** @var \Magento\Checkout\Model\Session $checkoutSession */
         $checkoutSession = $this->_objectManager->get(\Magento\Checkout\Model\Session::class);
         $checkoutSession->clearQuote();
-        $checkoutSession->setQuoteId($quote->getId());
+        $checkoutSession->setQuoteId((int) $quote->getId());
 
         $this->getRequest()
             ->setMethod(\Magento\Framework\App\Request\Http::METHOD_GET)
@@ -150,13 +122,13 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      * @magentoAppArea frontend
-     * @magentoDataFixture loadProduct
-     * @magentoDataFixture loadCustomer
+     * @magentoDataFixture MageSuite_MollieApplePayRestrictor::Test/_files/product.php
+     * @magentoDataFixture MageSuite_MollieApplePayRestrictor::Test/_files/customer.php
      * @magentoConfigFixture default_store applepay_restrictions/mollie_apple_pay_restrictions/full_visibility_enabled 1
      * @magentoConfigFixture default_store payment/mollie_general/apikey_test test_123456789012345678901234567890
      * @magentoConfigFixture default_store payment/mollie_general/type test
      */
-    public function testItDoesNotAddApplePayHiddenClassToPageBodyWhenFullVisibilityIsEnabled()
+    public function testItDoesNotAddApplePayHiddenClassToPageBodyWhenFullVisibilityIsEnabled(): void
     {
         $customer = $this->customerRepository->get('user24@example.com');
         $quote = $this->createQuote($customer);
@@ -164,7 +136,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         /** @var \Magento\Checkout\Model\Session $checkoutSession */
         $checkoutSession = $this->_objectManager->get(\Magento\Checkout\Model\Session::class);
         $checkoutSession->clearQuote();
-        $checkoutSession->setQuoteId($quote->getId());
+        $checkoutSession->setQuoteId((int) $quote->getId());
 
         $this->getRequest()
             ->setMethod(\Magento\Framework\App\Request\Http::METHOD_GET);
@@ -175,12 +147,12 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         $this->assertStringNotContainsString($this->addMollieApplePayVisibilityClass->getApplePayVisibilityBodyClass(), $body);
     }
 
-    public function createQuote($customer): \Magento\Quote\Model\Quote
+    public function createQuote(\Magento\Customer\Model\Data\Customer|\Magento\Customer\Model\Customer $customer): \Magento\Quote\Model\Quote
     {
         $address = $this->getAddressData();
         $guestCustomer = !$customer->getId() ? true : false;
 
-        /** @var Magento\Catalog\Model\Product $product */
+        /** @var \Magento\Catalog\Model\Product $product */
         $product = $this->productRepository->get('simple-666');
         $store = $this->storeManager->getStore();
 
@@ -190,8 +162,8 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
 
         $cartId = $this->cartManagement->createEmptyCart();
 
-        /** @var Magento\Quote\Model\Quote $quote */
-        $quote = $this->cartRepository->get($cartId);
+        /** @var \Magento\Quote\Model\Quote $quote */
+        $quote = $this->cartRepository->get((int) $cartId);
 
         $cartItemFactory = $this->_objectManager->create(\Magento\Quote\Api\Data\CartItemInterfaceFactory::class);
         /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
@@ -209,7 +181,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         $extensionAttributes = $this->_objectManager->get(\Magento\Quote\Api\Data\CartExtension::class);
         $extensionAttributes->setShippingAssignments([$shippingAssignment]);
         $quote
-            ->setReservedOrderId(3736)
+            ->setReservedOrderId('3736')
             ->setStore($store)
             ->setCurrency()
             ->setCustomerEmail($customer->getEmail())
@@ -218,7 +190,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
             ->setExtensionAttributes($extensionAttributes);
 
         if (!$guestCustomer) {
-            $quote->setCustomerId($customer->getId());
+            $quote->setCustomerId((int) $customer->getId());
         }
 
         $quote->setShippingAddress($shippingAddress);
@@ -230,7 +202,7 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         $billingAddress = $this->createBillingAddress($address);
         $quote->setBillingAddress($billingAddress);
 
-        /** @var Magento\Quote\Model\Quote\Payment $payment */
+        /** @var \Magento\Quote\Model\Quote\Payment $payment */
         $payment = $this->_objectManager->create(\Magento\Quote\Api\Data\PaymentInterface::class, ['data' => ['is_available' => true]]);
         $quote->setPayment($payment);
         $quote->setInventoryProcessed(false);
@@ -241,11 +213,6 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         return $quote;
     }
 
-    /**
-     * @param string $countryCode
-     * @param string $postcode
-     * @return array
-     */
     public function getAddressData(): array
     {
         return [
@@ -261,10 +228,6 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         ];
     }
 
-    /**
-     * @param string $email
-     * @return \Magento\Customer\Model\Customer
-     */
     protected function createGuestCustomer(string $email): \Magento\Customer\Model\Customer
     {
         /** @var \Magento\Customer\Model\Customer $customer */
@@ -274,10 +237,6 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         return $customer;
     }
 
-    /**
-     * @param array $shippingAddressData
-     * @return \Magento\Quote\Api\Data\AddressInterface
-     */
     protected function createShippingAddress(array $shippingAddressData): \Magento\Quote\Api\Data\AddressInterface
     {
         /** @var $shipppingAddress \Magento\Quote\Api\Data\AddressInterface */
@@ -292,10 +251,6 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         return $shippingAddress;
     }
 
-    /**
-     * @param array $billingAddressData
-     * @return \Magento\Quote\Api\Data\AddressInterface
-     */
     protected function createBillingAddress(array $billingAddressData): \Magento\Quote\Api\Data\AddressInterface
     {
         /** @var $billingAddress \Magento\Quote\Api\Data\AddressInterface */
@@ -303,15 +258,5 @@ class AddMollieApplePayVisibilityClassTest extends \Magento\TestFramework\TestCa
         $billingAddress->setAddressType('billing');
 
         return $billingAddress;
-    }
-
-    public static function loadProduct()
-    {
-        include __DIR__ . '/../../_files/product.php';
-    }
-
-    public static function loadCustomer()
-    {
-        include __DIR__ . '/../../_files/customer.php';
     }
 }
